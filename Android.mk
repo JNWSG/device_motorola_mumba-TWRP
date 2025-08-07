@@ -7,6 +7,6 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),genevn)
+ifeq ($(TARGET_DEVICE),cuscoi)
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
 endif
