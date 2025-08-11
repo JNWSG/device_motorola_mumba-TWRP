@@ -57,17 +57,27 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_PACKAGES += \
     sg_write_buffer \
     f2fs_io \
-    check_f2fs
+    check_f2fs \
+    mtpfs
 
 # Fastbootd
 PRODUCT_PACKAGES += \
     fastbootd \
     android.hardware.fastboot@1.1-impl-mock
 
+# FUSE
+PRODUCT_PRODUCT_PROPERTIES += \
+    persist.sys.fuse.passthrough.enable=true
+
 # HACK: Set vendor patch level
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.bootimage.build.date.utc=0 \
     ro.build.date.utc=0
+
+# Host ADB
+PRODUCT_HOST_PACKAGES += \
+    adbd \
+    mtpd
 
 # OEM otacert
 PRODUCT_EXTRA_RECOVERY_KEYS += \
@@ -106,3 +116,11 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
 SOONG_CONFIG_NAMESPACES += ufsbsg
 SOONG_CONFIG_ufsbsg += ufsframework
 SOONG_CONFIG_ufsbsg_ufsframework := bsg
+
+# TZDATA
+PRODUCT_PACKAGES += \
+    tzdata_twrp
+
+# Virtual AB Device
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.virtual_ab.enabled=true
