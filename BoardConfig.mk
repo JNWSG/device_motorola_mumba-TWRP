@@ -5,12 +5,13 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-DEVICE_PATH := device/motorola/cuscoi
-DEVICE_PREBUILT_PATH := device/motorola/cuscoi/prebuilt
+DEVICE_PATH := device/motorola/mumba
+DEVICE_PREBUILT_PATH := device/motorola/mumba/prebuilt
 
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
+BUILD_BROKEN_PLUGIN_VALIDATION := soong-libaosprecovery_defaults soong-libguitwrp_defaults soong-libminuitwrp_defaults soong-vold_defaults
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
@@ -122,7 +123,8 @@ TARGET_BOOTLOADER_BOARD_NAME := parrot
 QCOM_BOARD_PLATFORMS += parrot
 
 # Properties
-TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/properties/system.prop
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/properties/vendor.prop
 
 # Recovery
 TARGET_RECOVERY_QCOM_RTC_FIX := true
@@ -167,11 +169,12 @@ TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_LIBRESETPROP := true
 TW_INCLUDE_NTFS_3G := true
 TW_BACKUP_EXCLUSIONS := /data/fonts
+TW_SKIP_ADDITIONAL_FSTAB := true
 TW_NO_SCREEN_BLANK := true
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
 TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 1780
-TW_FRAMERATE := 60
+TW_FRAMERATE := 120
 TW_HAS_EDL_MODE := true
 TW_CUSTOM_CPU_TEMP_PATH := /sys/class/thermal/thermal_zone39/temp
 TW_EXCLUDE_DEFAULT_USB_INIT := true

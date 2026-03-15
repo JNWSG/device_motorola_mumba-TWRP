@@ -7,6 +7,6 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),cuscoi)
+ifeq ($(TARGET_DEVICE),mumba)
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
 endif

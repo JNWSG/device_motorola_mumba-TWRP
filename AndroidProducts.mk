@@ -6,9 +6,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_cuscoi.mk
+    $(LOCAL_DIR)/twrp_mumba.mk
 
 COMMON_LUNCH_CHOICES := \
-    twrp_cuscoi-user \
-    twrp_cuscoi-userdebug \
-    twrp_cuscoi-eng
+    twrp_mumba-user \
+    twrp_mumba-userdebug \
+    twrp_mumba-eng

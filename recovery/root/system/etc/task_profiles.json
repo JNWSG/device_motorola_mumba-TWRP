@@ -11,6 +11,11 @@
       "File": "foreground/cpus"
     },
     {
+      "Name": "HighCapacityWICPUs",
+      "Controller": "cpuset",
+      "File": "foreground_window/cpus"
+    },
+    {
       "Name": "MaxCapacityCPUs",
       "Controller": "cpuset",
       "File": "top-app/cpus"
@@ -20,21 +25,47 @@
       "Controller": "cpuset",
       "File": "audio-app/cpus"
     },
-
+    {
+      "Name": "MemStats",
+      "Controller": "memory",
+      "File": "memory.stat"
+    },
     {
       "Name": "MemLimit",
       "Controller": "memory",
-      "File": "memory.limit_in_bytes"
+      "File": "memory.limit_in_bytes",
+      "FileV2": "memory.max"
     },
     {
       "Name": "MemSoftLimit",
       "Controller": "memory",
-      "File": "memory.soft_limit_in_bytes"
+      "File": "memory.soft_limit_in_bytes",
+      "FileV2": "memory.low"
     },
     {
       "Name": "MemSwappiness",
       "Controller": "memory",
       "File": "memory.swappiness"
+    },
+    {
+      "Name": "MemUsage",
+      "Controller": "memory",
+      "File": "memory.usage_in_bytes"
+    },
+    {
+      "Name": "MemAndSwapUsage",
+      "Controller": "memory",
+      "File": "memory.memsw.usage_in_bytes"
+    },
+    {
+      "Name": "MemPressureLevel",
+      "Controller": "memory",
+      "File": "memory.pressure_level"
+    },
+    {
+      "Name": "MemCgroupEventControl",
+      "Controller": "memory",
+      "File": "cgroup.event_control"
     },
     {
       "Name": "UClampMin",
@@ -55,6 +86,11 @@
       "Name": "FreezerState",
       "Controller": "freezer",
       "File": "cgroup.freeze"
+    },
+    {
+      "Name": "CgroupProcs",
+      "Controller": "cgroup2",
+      "File": "cgroup.procs"
     }
   ],
 
@@ -138,6 +174,19 @@
       ]
     },
     {
+      "Name": "HighPerformanceWI",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpu",
+            "Path": "foreground_window"
+          }
+        }
+      ]
+    },
+    {
       "Name": "MaxPerformance",
       "Actions": [
         {
@@ -159,6 +208,19 @@
           {
             "Controller": "cpu",
             "Path": "rt"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "RealTimeInputScheduling",
+      "Actions": [
+        {
+          "Name": "SetSchedulerPolicy",
+          "Params":
+          {
+            "Policy": "SCHED_FIFO",
+            "Priority": "2"
           }
         }
       ]
@@ -202,7 +264,19 @@
         }
       ]
     },
-
+    {
+      "Name": "Dex2oatPerformance",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpu",
+            "Path": "dex2oat"
+          }
+        }
+      ]
+    },
     {
       "Name": "CpuPolicySpread",
       "Actions": [
@@ -362,6 +436,19 @@
       ]
     },
     {
+      "Name": "ProcessCapacityHighWI",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "foreground_window"
+          }
+        }
+      ]
+    },
+    {
       "Name": "ProcessCapacityMax",
       "Actions": [
         {
@@ -455,7 +542,6 @@
         }
       ]
     },
-
     {
       "Name": "LowIoPriority",
       "Actions": [
@@ -562,27 +648,53 @@
     },
 
     {
-      "Name": "PerfBoost",
+      "Name": "SFMainBoostPolicy",
       "Actions": [
         {
-          "Name": "SetClamps",
+          "Name": "JoinCgroup",
           "Params":
           {
-            "Boost": "50%",
-            "Clamp": "0"
+            "Controller": "cpuset",
+            "Path": "boost-app"
           }
         }
       ]
     },
     {
-      "Name": "PerfClamp",
+      "Name": "SFRenderEngineBoostPolicy",
       "Actions": [
         {
-          "Name": "SetClamps",
+          "Name": "JoinCgroup",
           "Params":
           {
-            "Boost": "0",
-            "Clamp": "30%"
+            "Controller": "cpuset",
+            "Path": "boost-app"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "HigherPerformance",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "h-foreground"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "HigherProcessCapacityLow",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "h-background"
           }
         }
       ]
@@ -596,7 +708,7 @@
           "Params":
           {
             "Name": "MemSoftLimit",
-            "Value": "16MB"
+            "Value": "16M"
           }
         },
         {
@@ -618,7 +730,7 @@
           "Params":
           {
             "Name": "MemSoftLimit",
-            "Value": "512MB"
+            "Value": "512M"
           }
         },
         {
@@ -660,12 +772,20 @@
       "Profiles": [ "HighPerformance", "HighIoPriority", "TimerSlackNormal" ]
     },
     {
+      "Name": "SCHED_SP_FOREGROUND_WINDOW",
+      "Profiles": [ "HighPerformanceWI", "HighIoPriority", "TimerSlackNormal" ]
+    },
+    {
       "Name": "SCHED_SP_TOP_APP",
       "Profiles": [ "MaxPerformance", "MaxIoPriority", "TimerSlackNormal" ]
     },
     {
       "Name": "SCHED_SP_SYSTEM",
       "Profiles": [ "ServicePerformance", "LowIoPriority", "TimerSlackNormal" ]
+    },
+    {
+      "Name": "SCHED_SP_COMPUTE",
+      "Profiles": [ "HighPerformance", "ProcessCapacityHigh", "LowIoPriority", "TimerSlackNormal" ]
     },
     {
       "Name": "SCHED_SP_RT_APP",
@@ -684,6 +804,10 @@
       "Profiles": [ "HighPerformance", "ProcessCapacityHigh", "HighIoPriority", "TimerSlackNormal" ]
     },
     {
+      "Name": "CPUSET_SP_FOREGROUND_WINDOW",
+      "Profiles": [ "HighPerformanceWI", "ProcessCapacityHighWI", "HighIoPriority", "TimerSlackNormal" ]
+    },
+    {
       "Name": "CPUSET_SP_TOP_APP",
       "Profiles": [ "MaxPerformance", "ProcessCapacityMax", "MaxIoPriority", "TimerSlackNormal" ]
     },
@@ -697,7 +821,19 @@
     },
     {
       "Name": "Dex2OatBootComplete",
-      "Profiles": [ "SCHED_SP_BACKGROUND" ]
+      "Profiles": [ "Dex2oatPerformance", "LowIoPriority", "TimerSlackHigh" ]
+    },
+    {
+      "Name": "Dex2OatBackground",
+      "Profiles": [ "Dex2OatBootComplete" ]
+    },
+    {
+      "Name": "OtaProfiles",
+      "Profiles": [ "ServiceCapacityLow", "LowIoPriority", "HighEnergySaving" ]
+    },
+    {
+      "Name": "InputPolicy",
+      "Profiles": [ "RealTimeInputScheduling", "MaxPerformance", "ProcessCapacityMax", "TimerSlackNormal" ]
     }
   ]
 }

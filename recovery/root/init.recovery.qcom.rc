@@ -90,3 +90,7 @@ service runatboot /system/bin/runatboot.sh
     group root
     oneshot
     seclabel u:r:recovery:s0
+
+
+on property:vendor.sys.listeners.registered=true
+    start weaver_nxp
