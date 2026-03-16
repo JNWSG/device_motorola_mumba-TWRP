@@ -1,33 +1,52 @@
 #
-# Copyright (C) 2023 The Android Open Source Project
-# Copyright (C) 2023 SebaUbuntu's TWRP device tree generator
+# Copyright 2017 The Android Open Source Project
 #
-# SPDX-License-Identifier: Apache-2.0
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# Only the below variable(s) need to be changed!
 #
 
-# Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
-#$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+# Define hardware platform
+PRODUCT_PLATFORM := parrot
 
-# Inherit some common TWRP stuff.
-$(call inherit-product, vendor/twrp/config/common.mk)
+#
+#
+#
+# The below variables will be generated automatically
+#
+#
+# Release name (automatically taken from this file's suffix)
+PRODUCT_RELEASE_NAME := $(lastword $(subst /, ,$(lastword $(subst _, ,$(firstword $(subst ., ,$(MAKEFILE_LIST)))))))
+
+# Custom vendor used in build tree (automatically taken from this file's prefix)
+CUSTOM_VENDOR := $(lastword $(subst /, ,$(firstword $(subst _, ,$(firstword $(MAKEFILE_LIST))))))
+
+# Inherit from our custom product configuration
+$(call inherit-product, vendor/$(CUSTOM_VENDOR)/config/common.mk)
+
+# OEM Info (automatically taken from device tree path)
+BOARD_VENDOR := $(or $(word 2,$(subst /, ,$(firstword $(MAKEFILE_LIST)))),$(value 2))
+
+## Device identifier. This must come after all inclusions
+PRODUCT_DEVICE := $(PRODUCT_RELEASE_NAME)
+PRODUCT_NAME := $(CUSTOM_VENDOR)_$(PRODUCT_DEVICE)
+PRODUCT_BRAND := $(BOARD_VENDOR)
+PRODUCT_MODEL := $(shell echo $(PRODUCT_BRAND) | tr  '[:lower:]' '[:upper:]')_$(PRODUCT_DEVICE)
+PRODUCT_MANUFACTURER := $(PRODUCT_BRAND)
+
+# Device path for OEM device tree
+DEVICE_PATH := device/$(PRODUCT_BRAND)/$(PRODUCT_DEVICE)
 
 # Inherit from mumba device
 $(call inherit-product, device/motorola/mumba/device.mk)
-
-PRODUCT_DEVICE := mumba
-PRODUCT_NAME := twrp_mumba
-PRODUCT_BRAND := motorola
-PRODUCT_MODEL := motorola G57 Power
-PRODUCT_MANUFACTURER := motorola
-
-PRODUCT_GMS_CLIENTID_BASE := android-motorola
-
-PRODUCT_BUILD_PROP_OVERRIDES += \
-    TARGET_PRODUCT=mumba \
-    PRIVATE_BUILD_DESC="mumba-user 15 WWAA36V.48-12-ST12.1 a0ae9 release-keys"
-BUILD_FINGERPRINT := motorola/mumba/mumba:15/WWAA36V.48-12-ST12.1/a0ae9:user/release-keys

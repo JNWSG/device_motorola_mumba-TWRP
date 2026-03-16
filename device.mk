@@ -5,6 +5,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+#$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
@@ -13,6 +21,10 @@ PRODUCT_SOONG_NAMESPACES += \
 BOARD_SHIPPING_API_LEVEL := 32
 PRODUCT_SHIPPING_API_LEVEL := 32
 SHIPPING_API_LEVEL := 32
+
+# Motorola
+TWRP_REQUIRED_MODULES += \
+    moto_prebuilt
 
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \

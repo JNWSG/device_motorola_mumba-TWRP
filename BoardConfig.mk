@@ -7,7 +7,7 @@
 
 DEVICE_PATH := device/motorola/mumba
 DEVICE_PREBUILT_PATH := device/motorola/mumba/prebuilt
-
+TW_LOAD_VENDOR_MODULES := "qti_battery_charger.ko"
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
