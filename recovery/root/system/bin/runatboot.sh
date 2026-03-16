@@ -8,7 +8,7 @@ sleep 1
 if [ $(cat /sys/class/touchscreen/primary/productinfo) == "NT36672C" ]
 then
 echo 1 > /sys/class/touchscreen/primary/forcereflash
-echo novatek_ts-csot-NT36672C-2302240D-605b-genevn.bin > /sys/class/touchscreen/primary/doreflash
+echo boe_chipone_firmware.bin > /sys/class/touchscreen/primary/doreflash
 echo "Reflashing firmware..."
 echo 0 > /sys/class/touchscreen/primary/forcereflash
 fi
