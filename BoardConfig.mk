@@ -22,9 +22,12 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 AB_OTA_PARTITIONS += \
     boot \
     dtbo \
+    init_boot \
+    recovery \
     product \
     system \
     system_ext \
+    system_dlkm \
     vbmeta \
     vbmeta_system \
     vendor \
