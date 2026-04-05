@@ -19,13 +19,13 @@
 #
 
 #set -o xtrace
-TDEVICE="peridot"
+FDEVICE="peridot"
 
 fox_get_target_device() {
 	export script_path="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-	if echo "$script_path" | grep -q "$TFDEVICE"; then
-		TW_BUILD_DEVICE="$TDEVICE"
-	elif echo "$0" | grep -q "$TDEVICE"; then
+	if echo "$script_path" | grep -q "$FDEVICE"; then
+		TW_BUILD_DEVICE="$FDEVICE"
+	elif echo "$0" | grep -q "$FDEVICE"; then
 		TW_BUILD_DEVICE="$FDEVICE"
 	fi
 }
@@ -34,7 +34,7 @@ if [ -z "$TW_BUILD_DEVICE" ]; then
 	TW_get_target_device
 fi
 
-if [ "$TW_BUILD_DEVICE" = "$TDEVICE" ]; then
+if [ "$TW_BUILD_DEVICE" = "$FDEVICE" ]; then
 	echo "Detected build device: $TW_BUILD_DEVICE"
 
 	# A/B Partition
