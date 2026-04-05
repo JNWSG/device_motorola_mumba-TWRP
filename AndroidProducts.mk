@@ -20,7 +20,7 @@
 PRODUCT_MAKEFILES := $(LOCAL_DIR)/twrp_peridot.mk
 
 COMMON_LUNCH_CHOICES := \
-    twrp_peridot-user \
-    twrp_peridot-userdebug \
-    twrp_peridot-eng
+    twrp_peridot-BP2A-user \
+    twrp_peridot-BP2A-userdebug \
+    twrp_peridot-BP2A-eng
 #
