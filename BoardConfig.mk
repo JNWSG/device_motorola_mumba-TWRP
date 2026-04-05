@@ -167,7 +167,7 @@ TW_DEFAULT_BRIGHTNESS := 200
 TW_NO_SCREEN_BLANK := true
 TW_EXCLUDE_APEX := true
 TW_HAS_EDL_MODE := true
-OF_UNBIND_SDCARD_F2FS := 1
+TW_UNBIND_SDCARD_F2FS := 1
 
 # automatically wipe /metadata after data format
 TW_WIPE_METADATA_AFTER_DATAFORMAT := 1
@@ -192,8 +192,8 @@ USE_AIDL_BOOT_CONTROL := 1
 # Set this to 1 to force the selection of f2fs when formatting data
 FORCE_DATA_FORMAT_F2FS := 1
 
-# Set to 1 to force the casefolding props to true. Useful for devices that shipped with Android 11+/FBEv2, where casefolding is always used
-FORCE_CASEFOLDING := 1
+## Set to 1 to force the casefolding props to true. Useful for devices that shipped with Android 11+/FBEv2, where casefolding is always used
+#FORCE_CASEFOLDING := 1
 
 # Haptic
 FIXED_HAPTICS := true
