@@ -167,6 +167,33 @@ TW_DEFAULT_BRIGHTNESS := 200
 TW_NO_SCREEN_BLANK := true
 TW_EXCLUDE_APEX := true
 TW_HAS_EDL_MODE := true
+OF_UNBIND_SDCARD_F2FS := 1
+
+# automatically wipe /metadata after data format
+TW_WIPE_METADATA_AFTER_DATAFORMAT := 1
+
+# avoid MTP issues after data format
+TW_BIND_MOUNT_SDCARD_ON_FORMAT := 1
+
+ifeq ($(FIXED_DECRYPT),false)
+	# Set to 1 to skip the FBE decryption routines (prevents hanging at the Fox logo or Redmi/Mi logo)
+	TW_SKIP_FBE_DECRYPTION := 1
+endif
+
+# Called just before formatting /data; only useful for devices/ROMs that have dynamic partitions
+TW_USE_DMCTL := 1
+
+# Set this to 1 to avoid the new 'NO KERNEL CONFIG' error, when using a prebuilt kernel
+FORCE_PREBUILT_KERNEL := 1
+
+# Set this to 1 if your device uses aidl (as opposed to hidl) to handle boot control, particularly changing slots
+USE_AIDL_BOOT_CONTROL := 1
+
+# Set this to 1 to force the selection of f2fs when formatting data
+FORCE_DATA_FORMAT_F2FS := 1
+
+# Set to 1 to force the casefolding props to true. Useful for devices that shipped with Android 11+/FBEv2, where casefolding is always used
+FORCE_CASEFOLDING := 1
 
 # Haptic
 FIXED_HAPTICS := true
@@ -184,10 +211,4 @@ TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko focaltech_3683g.ko focaltech_touc
 TW_LOAD_VENDOR_MODULES_EXCLUDE_GKI := true
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/class/thermal/thermal_zone48/temp"
 TW_BATTERY_SYSFS_WAIT_SECONDS := 6
-
-#PBRP FLAGS
-PB_DISABLE_DEFAULT_DM_VERITY := true
-PB_TORCH_PATH := /sys/class/leds/led:torch_0
-PB_DISABLE_DEFAULT_PATCH_AVB2 := true
-MAINTAINER := "Khargosxh18"
 
