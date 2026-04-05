@@ -21,7 +21,7 @@
 #set -o xtrace
 FDEVICE="peridot"
 
-fox_get_target_device() {
+TW_get_target_device() {
 	export script_path="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 	if echo "$script_path" | grep -q "$FDEVICE"; then
 		TW_BUILD_DEVICE="$FDEVICE"
