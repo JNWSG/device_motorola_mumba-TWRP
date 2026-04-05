@@ -19,60 +19,55 @@
 #
 
 #set -o xtrace
-FDEVICE="peridot"
+TDEVICE="peridot"
 
 fox_get_target_device() {
 	export script_path="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-	if echo "$script_path" | grep -q "$FDEVICE"; then
-		FOX_BUILD_DEVICE="$FDEVICE"
-	elif echo "$0" | grep -q "$FDEVICE"; then
-		FOX_BUILD_DEVICE="$FDEVICE"
+	if echo "$script_path" | grep -q "$TFDEVICE"; then
+		TW_BUILD_DEVICE="$TDEVICE"
+	elif echo "$0" | grep -q "$TDEVICE"; then
+		TW_BUILD_DEVICE="$FDEVICE"
 	fi
 }
 
-if [ -z "$FOX_BUILD_DEVICE" ]; then
-	fox_get_target_device
+if [ -z "$TW_BUILD_DEVICE" ]; then
+	TW_get_target_device
 fi
 
-if [ "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
-	echo "Detected build device: $FOX_BUILD_DEVICE"
-
-# Review build flags with below links:
-# https://gitlab.com/OrangeFox/vendor/recovery/-/raw/fox_14.1/orangefox_build_vars.txt
-# https://gitlab.com/OrangeFox/bootable/Recovery/-/raw/fox_14.1/orangefox.mk
+if [ "$TW_BUILD_DEVICE" = "$TDEVICE" ]; then
+	echo "Detected build device: $TW_BUILD_DEVICE"
 
 	# A/B Partition
-	export FOX_VIRTUAL_AB_DEVICE=1
-	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
-	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
+	export TW_VIRTUAL_AB_DEVICE=1
+	export TW_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
+	export TW_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
 
 	# Compression Binaries & Tools
-	export FOX_USE_BASH_SHELL=1
-	export FOX_USE_NANO_EDITOR=1
-	export FOX_USE_TAR_BINARY=1
-	export FOX_USE_LZ4_BINARY=1
-	export FOX_USE_SED_BINARY=1
-	export FOX_USE_XZ_UTILS=1
-	export FOX_USE_ZSTD_BINARY=1
-	export FOX_DELETE_AROMAFM=1
-	export FOX_REMOVE_AAPT=1
-	export FOX_USE_BUSYBOX_BINARY=1
-	export FOX_USE_GREP_BINARY=1
+	export TW_USE_BASH_SHELL=1
+	export TW_USE_NANO_EDITOR=1
+	export TW_USE_TAR_BINARY=1
+	export TW_USE_LZ4_BINARY=1
+	export TW_USE_SED_BINARY=1
+	export TW_USE_XZ_UTILS=1
+	export TW_USE_ZSTD_BINARY=1
+	export TW_DELETE_AROMAFM=1
+	export TW_REMOVE_AAPT=1
+	export TW_USE_BUSYBOX_BINARY=1
+	export TW_USE_GREP_BINARY=1
 
 	# KernelSU / Magisk Support
-	# export FOX_DELETE_MAGISK_ADDON=1
-	export FOX_USE_SPECIFIC_MAGISK_ZIP="$script_path/prebuilt/Magisk-v30.6.zip"
-	export FOX_MOVE_MAGISK_INSTALLER_TO_RAMDISK=1
-	export FOX_ENABLE_KERNELSU_SUPPORT=1
-	export FOX_ENABLE_KERNELSU_NEXT_SUPPORT=1
-	export FOX_ENABLE_SUKISU_SUPPORT=1
+	export TW_USE_SPECIFIC_MAGISK_ZIP="$script_path/prebuilt/Magisk-v30.6.zip"
+	export TW_MOVE_MAGISK_INSTALLER_TO_RAMDISK=1
+	export TW_ENABLE_KERNELSU_SUPPORT=1
+	export TW_ENABLE_KERNELSU_NEXT_SUPPORT=1
+	export TW_ENABLE_SUKISU_SUPPORT=1
 
-	# Fox Settings
-	export FOX_VARIANT="Dfe"
-	export FOX_SETTINGS_ROOT_DIRECTORY="/persist"
-	export FOX_MAINTAINER_PATCH_VERSION="$(date -d "+40 minutes" +%Y%m%d%H%M)"
-	export FOX_ALLOW_EARLY_SETTINGS_LOAD=1
-	export FOX_RESET_SETTINGS="disabled"
+	# Settings
+	export TW_VARIANT="CRYPTO"
+	export TW_SETTINGS_ROOT_DIRECTORY="/persist"
+	export TW_MAINTAINER_PATCH_VERSION="$(date -d "+40 minutes" +%Y%m%d%H%M)"
+	export TW_ALLOW_EARLY_SETTINGS_LOAD=1
+	export TW_RESET_SETTINGS="disabled"
 else
 	echo "I: vendorsetup.sh skipped; device mismatch or environment issue."
 fi
