@@ -6,6 +6,9 @@ on property:twrp.variant.files_copied=1
 on property:twrp.cpko=true
     write /dev/kmsg "[peridotwifi] kernel modules loaded"
 
+on property:some.start.property=true
+    setprop qcomwlan.driver.load true
+
     start vendor.qrtr-ns
     write /dev/kmsg "[peridotwifi] qrtr-ns started"
 
