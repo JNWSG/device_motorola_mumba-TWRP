@@ -53,7 +53,7 @@ on init
     start vendor.boot-qti
     setprop prepdecrypt.setpatch true
 # PERMANENT FIX: Clear the boot-recovery message from misc
-    exec u:r:recovery:s0 -- /system/bin/dd if=/dev/zero of=/dev/block/by-name/misc bs=2keymint-qti
+    exec u:r:recovery:s0 -- /system/bin/dd if=/dev/zero of=/dev/block/by-name/misc bs=2M count=1
 
 # potential workaround for HyperOS ROMs where 'crypto.ready' isn't set early enough by prepdecrypt.sh (causing decryption failure on flashed recovery,
 # while being successful on hot-booted recovery). It can be set anywhere (init, boot, post-fs, etc) - here we set it as late as possible, to avoid new
