@@ -1,0 +1,79 @@
+on property:twrp.variant.files_copied=1
+    write /proc/sys/kernel/firmware_config/force_sysfs_fallback 1
+    write /dev/kmsg "[peridotwifi] starting cp-wifi-ko"
+    start cp-wifi-ko
+
+on property:twrp.cpko=true
+    write /dev/kmsg "[peridotwifi] kernel modules loaded"
+
+    start vendor.qrtr-ns
+    write /dev/kmsg "[peridotwifi] qrtr-ns started"
+
+    start vendor.rmt_storage
+    write /dev/kmsg "[peridotwifi] rmt_storage started"
+
+    start vendor.pd_mapper
+    write /dev/kmsg "[peridotwifi] pd_mapper started"
+
+    start vendor.per_proxy
+    write /dev/kmsg "[peridotwifi] per_proxy started"
+
+    start cnss-daemon
+    write /dev/kmsg "[peridotwifi] cnss-daemon started"
+
+    start wificond
+    write /dev/kmsg "[peridotwifi] wificond started"
+
+    start wifi_hal
+    write /dev/kmsg "[peridotwifi] wifi_hal started"
+
+on early-boot
+    write /dev/kmsg "[peridotwifi] early boot config"
+    write /sys/kernel/icnss/wlan_en_delay 1000
+    write /sys/kernel/icnss/wpss_boot 1
+
+on boot
+    write /dev/kmsg "[peridotwifi] boot config"
+    write /sys/kernel/cnss/recovery 3
+    chown radio wakelock /sys/power/wake_lock
+    chown radio wakelock /sys/power/wake_unlock
+    chmod 0660 /sys/power/wake_lock
+    chmod 0660 /sys/power/wake_unlock
+
+service cp-wifi-ko /system/bin/cp-wifi-ko.sh
+    disabled
+    oneshot
+    user root
+    seclabel u:r:recovery:s0
+
+service vendor.qrtr-ns /vendor/bin/qrtr-ns -f
+    disabled
+    user root
+    group root
+    capabilities NET_BIND_SERVICE
+    seclabel u:r:recovery:s0
+
+service vendor.rmt_storage /vendor/bin/rmt_storage
+    disabled
+    user root
+    seclabel u:r:recovery:s0
+
+service vendor.pd_mapper /vendor/bin/pd-mapper
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
+
+service vendor.per_proxy /vendor/bin/pm-proxy
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
+
+service cnss-daemon /vendor/bin/cnss-daemon -n -l
+    disabled
+    user root
+    group root system inet net_admin wifi
+    capabilities NET_ADMIN
+    seclabel u:r:recovery:s0
+
