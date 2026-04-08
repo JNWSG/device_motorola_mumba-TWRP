@@ -160,6 +160,8 @@ TW_INCLUDE_NTFS_3G := true
 TW_NO_EXFAT_FUSE := false
 TW_USE_TOOLBOX := true
 TARGET_USES_MKE2FS := true
+TW_INCLUDE_FUSE_EXFAT := true
+TW_INCLUDE_FUSE_NTFS := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
@@ -167,8 +169,9 @@ TW_EXTRA_LANGUAGES := false
 TW_DEFAULT_LANGUAGE := en
 TW_DEFAULT_BRIGHTNESS := 200
 TW_NO_SCREEN_BLANK := true
+TW_USE_DMCTL := true
 TW_EXCLUDE_APEX := true
-TW_HAS_EDL_MODE := true
+TW_HAS_EDL_MODE := false
 TW_UNBIND_SDCARD_F2FS := 1
 TW_BACKUP_EXCLUSIONS := /data/fonts
 TW_LOAD_PREBUILT_MODULES_AT_FIRST := true
@@ -186,9 +189,6 @@ ifeq ($(FIXED_DECRYPT),false)
 	# Set to 1 to skip the FBE decryption routines (prevents hanging at the Fox logo or Redmi/Mi logo)
 	TW_SKIP_FBE_DECRYPTION := 1
 endif
-
-# Called just before formatting /data; only useful for devices/ROMs that have dynamic partitions
-TW_USE_DMCTL := 1
 
 # Set this to 1 to avoid the new 'NO KERNEL CONFIG' error, when using a prebuilt kernel
 FORCE_PREBUILT_KERNEL := 1
@@ -218,4 +218,3 @@ TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko focaltech_3683g.ko focaltech_touc
 TW_LOAD_VENDOR_MODULES_EXCLUDE_GKI := true
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/class/thermal/thermal_zone48/temp"
 TW_BATTERY_SYSFS_WAIT_SECONDS := 6
-
