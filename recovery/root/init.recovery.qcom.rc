@@ -24,7 +24,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-import /init.recovery.wifi.rc
+#DISABLEDBYCOMMENTINGimport /init.recovery.wifi.rc
 on early-init
     wait /sys/fs/selinux/enforce
     write /sys/fs/selinux/enforce 0
