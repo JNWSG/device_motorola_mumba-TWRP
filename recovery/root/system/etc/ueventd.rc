@@ -101,18 +101,18 @@ subsystem vfio
 
 # === Wi-Fi / CNSS Support ===
 # Add Wi-Fi firmware search paths
-firmware_directories /vendor/etc/wifi/ /odm/firmware/
+# firmware_directories /vendor/etc/wifi/ /odm/firmware/
 
 # Wi-Fi device nodes
-/dev/wcnss_wlan       0660   system     system
-/dev/wcnss_ctrl       0660   system     system
+# /dev/wcnss_wlan       0660   system     system
+# /dev/wcnss_ctrl       0660   system     system
 
 # RX queue sysfs permissions for wlan0 and p2p0
 /sys/devices/platform/soc/*/net/wlan0/queues/rx-* rps_cpus   0660   system   system
 /sys/devices/platform/soc/*/net/p2p0/queues/rx-* rps_cpus    0660   system   system
 
 # Optional: any peach / cld firmware paths (if using peach_v2)
-firmware_directories /vendor/firmware_mnt/image/
+# firmware_directories /vendor/firmware_mnt/image/
 
 # Ensure RFKill permissions
 /dev/rfkill            0660   system     system
