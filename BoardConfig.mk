@@ -149,7 +149,7 @@ BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 
 # TouchScreen
-TW_LOAD_VENDOR_MODULES := "sx937x_sar.ko qti_battery_charger.ko gh_rm_drv.ko gh_irq_lend.ko gh_mem_notifier.ko gh_msgq.ko altmode-glink.ko dwc3-msm.ko fsa4480-i2c.ko msm_ext_display.ko panel_event_notifier.ko"
+TW_LOAD_VENDOR_MODULES := "sx937x_sar.ko qti_battery_charger.ko gh_rm_drv.ko gh_irq_lend.ko gh_mem_notifier.ko gh_msgq.ko altmode-glink.ko fsa4480-i2c.ko msm_ext_display.ko panel_event_notifier.ko chipone_tddi_v3_mmi.ko hdcp_qseecom_dlkm.ko awinic_sar.ko ilitek_v4_mmi.ko msm_drm.ko qcom-scm.ko qcom_va_minidump.ko pinctrl-msm.ko spmi-pmic-arb.ko mem_buf_dev.ko qcom_iommu_util.ko msm_dma_iommu_mapping.ko ipanetm.ko rmnet_ctl.ko audio_pkt_dlkm.ko ipam.ko usb_f_gsi.ko icnss2.ko usb_f_qdss.ko qti_glink_charger.ko i2c-msm-geni.ko slim-qcom-ngd-ctrl.ko nxp-nci.ko snd-usb-audio-qmi.ko charger-ulog-glink.ko bm_adsp_ulog.ko ucsi_qti_glink.ko f_fs_ipc_log.ko dwc3-msm.ko mmi_charger.ko pmic-pon-log.ko sps_drv.ko glink_pkt.ko gsim.ko qsee_ipc_irq_bridge.ko qti_pmic_glink.ko mhi_dev_uci.ko msm_geni_serial.ko mhi_dev_dtr.ko smp2p.ko qti-ocp-notifier.ko bam_dma.ko msm_gpi.ko mhi.ko pci-msm-drv.ko qcom_glink_smem.ko qcom_glink.ko ufs-qcom.ko rpmh-regulator.ko sdhci-msm.ko msm_qmp.ko qrtr.ko qcom_rpmh.ko qcom_tsens.ko bcl_pmic5.ko qcom_aoss.ko qcom-ipcc.ko qcom-pdc.ko"
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
