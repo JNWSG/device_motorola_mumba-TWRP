@@ -7,7 +7,6 @@
 
 DEVICE_PATH := device/motorola/mumba
 DEVICE_PREBUILT_PATH := device/motorola/mumba/prebuilt
-TW_LOAD_VENDOR_MODULES := "qti_battery_charger.ko"
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
@@ -148,6 +147,9 @@ BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+
+# TouchScreen
+TW_LOAD_VENDOR_MODULES := "sx937x_sar.ko qti_battery_charger.ko gh_rm_drv.ko gh_irq_lend.ko gh_mem_notifier.ko gh_msgq.ko altmode-glink.ko dwc3-msm.ko fsa4480-i2c.ko msm_ext_display.ko panel_event_notifier.ko"
 
 # Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
