@@ -166,6 +166,7 @@ BOARD_USES_QCOM_FBE_DECRYPTION := true
 TW_USE_FSCRYPT_POLICY := 2
 
 # TWRP Configuration
+TW_EXCLUDE_APEX := true 
 TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
