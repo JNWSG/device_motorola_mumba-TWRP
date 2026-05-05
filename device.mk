@@ -39,7 +39,7 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
 # Required modules
 TWRP_REQUIRED_MODULES += \
-    prebuilt
+    moto_prebuilt
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
