@@ -20,14 +20,11 @@
       "Controller": "cpuset",
       "File": "top-app/cpus"
     },
-    // Xiaomi task_profiles.json for QCOM platform
-    // MIUI ADD: Performance_MemoryEnhance
     {
       "Name": "AudioAppCapacityCPUs",
       "Controller": "cpuset",
       "File": "audio-app/cpus"
     },
-    // END Performance_MemoryEnhance
     {
       "Name": "MemStats",
       "Controller": "memory",
@@ -202,21 +199,6 @@
         }
       ]
     },
-// MIUI ADD: Performance_SpeedUI
-    {
-      "Name": "MISFPerformance",
-      "Actions": [
-        {
-          "Name": "JoinCgroup",
-          "Params":
-          {
-            "Controller": "cpu",
-            "Path": "misf"
-          }
-        }
-      ]
-    },
-// END Performance_SpeedUI
     {
       "Name": "RealtimePerformance",
       "Actions": [
@@ -256,7 +238,6 @@
         }
       ]
     },
-    // MIUI ADD: Performance_MemoryEnhance
     {
       "Name": "AudioAppPerformance",
       "Actions" : [
@@ -270,7 +251,6 @@
         }
       ]
     },
-    // END Performance_MemoryEnhance
     {
       "Name": "NNApiHALPerformance",
       "Actions": [
@@ -481,21 +461,7 @@
         }
       ]
     },
-// MIUI ADD: Performance_SpeedUI
-    {
-      "Name": "ProcessCapacityMISF",
-      "Actions": [
-        {
-          "Name": "JoinCgroup",
-          "Params":
-          {
-            "Controller": "cpuset",
-            "Path": "misf"
-          }
-        }
-      ]
-    },
-// END Performance_SpeedUI
+
     {
       "Name": "ServiceCapacityLow",
       "Actions": [
@@ -536,7 +502,6 @@
         }
       ]
     },
-    // MIUI ADD: Performance_MemoryEnhance
     {
       "Name": "AudioAppCapacity",
       "Actions" : [
@@ -577,7 +542,6 @@
         }
       ]
     },
-    // END Performance_MemoryEnhance
     {
       "Name": "LowIoPriority",
       "Actions": [
@@ -638,7 +602,7 @@
           "Name": "SetTimerSlack",
           "Params":
           {
-            "Slack": "40000000"
+            "Slack": "10000000"
           }
         }
       ]
@@ -678,6 +642,59 @@
           {
             "Controller": "cpuset",
             "Path": "system-background"
+          }
+        }
+      ]
+    },
+
+    {
+      "Name": "SFMainBoostPolicy",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "boost-app"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "SFRenderEngineBoostPolicy",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "boost-app"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "HigherPerformance",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "h-foreground"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "HigherProcessCapacityLow",
+      "Actions": [
+        {
+          "Name": "JoinCgroup",
+          "Params":
+          {
+            "Controller": "cpuset",
+            "Path": "h-background"
           }
         }
       ]
@@ -738,35 +755,7 @@
           }
         }
       ]
-    },
-    // MIUI ADD: Performance_MemoryEnhance
-    {
-      "Name": "MemoryProtectedProcess",
-      "Actions": [
-        {
-          "Name": "JoinCgroup",
-          "Params":
-          {
-            "Controller": "memory",
-            "Path": "protected-app"
-          }
-        }
-      ]
-    },
-    {
-      "Name": "MemoryFreezeProcess",
-      "Actions": [
-        {
-          "Name": "JoinCgroup",
-          "Params":
-          {
-            "Controller": "memory",
-            "Path": "freeze-app"
-          }
-        }
-      ]
     }
-    // END Performance_MemoryEnhance
   ],
 
   "AggregateProfiles": [
@@ -842,11 +831,9 @@
       "Name": "OtaProfiles",
       "Profiles": [ "ServiceCapacityLow", "LowIoPriority", "HighEnergySaving" ]
     },
-//MIUI ADD: Performance_BoostFramework
     {
       "Name": "InputPolicy",
-      "Profiles": [ "MaxPerformance", "ProcessCapacityMax", "TimerSlackNormal" ]
+      "Profiles": [ "RealTimeInputScheduling", "MaxPerformance", "ProcessCapacityMax", "TimerSlackNormal" ]
     }
-//END Performance_BoostFramework
   ]
 }

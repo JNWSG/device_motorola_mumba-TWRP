@@ -26,7 +26,7 @@
 #
 #
 # Changes from Qualcomm Innovation Center are provided under the following license:
-# Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+# Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted (subject to the limitations in the
@@ -66,9 +66,8 @@ import /vendor/etc/ueventd.qcom.userdebug.rc
 # Firmware directory Path
 # Below macro will be read by uevent and path will
 # be added to search path for firmware loading
-# MIUI MOD: WIFI_VendorApex
-firmware_directories /apex/com.xiaomi.wifi/etc/firmware/  /vendor/firmware_mnt/image/ /vendor/modem_firmware/image/ /apex/com.xiaomi.wifi/etc/
-# END WIFI_VendorApex
+firmware_directories /vendor/firmware_mnt/image/
+
 subsystem dma_heap
     devname uevent_devpath
     dirname /dev/dma_heap
@@ -128,6 +127,7 @@ subsystem mem_buf_vm
 /dev/smd3                 0660   bluetooth  bluetooth
 /dev/btpower              0660   bluetooth  system
 /dev/btfmslim             0660   bluetooth  system
+/dev/btfmswr              0660   bluetooth  system
 /dev/bt_cp_ctrl           0660   bluetooth  system
 /dev/btfmcodec_dev        0660   bluetooth  system
 
@@ -188,6 +188,8 @@ subsystem mem_buf_vm
 /dev/mhi_*_pipe_32        0640   radio      radio
 /dev/at_usb0              0640   radio      radio
 /dev/at_mdm0              0640   radio      radio
+/dev/ims_dc_sub1          0640   radio      radio
+/dev/ims_dc_sub2          0640   radio      radio
 /dev/video*               0660   system     camera
 /dev/cvp*                 0660   system     camera
 /dev/media*               0660   system     camera
@@ -414,9 +416,6 @@ subsystem mem_buf_vm
 # Ultrasound device
 /dev/usf1                 0660   system     system
 
-# xlog device
-/dev/xlog                 0660   system     audio
-
 # Ramdump devices
 /dev/ramdump*             0640   system     system
 
@@ -424,6 +423,15 @@ subsystem mem_buf_vm
 /dev/qbt*                 0660   system     system
 /sys/class/fts/touch_aoi aoi_set 0660 root system
 /sys/class/fts/touch_aoi power_set 0660 root system
+
+# Goodix fingerprint device
+/dev/goodix_fp            0660   system     system
+
+# EgisTech fingerprint device
+/dev/esfp0                0660   system     system
+
+# Anc fingerprint device
+/dev/jiiov_fp             0660   system     system
 
 #ImproveTouch device
 /dev/hbtp_input           0660   system     system
@@ -443,9 +451,24 @@ subsystem mem_buf_vm
 /dev/block/platform/soc/7c4000.sdhci/by-name/frp        0600   system     system
 /dev/block/platform/soc/4744000.sdhci/by-name/frp       0600   system     system
 /dev/block/platform/soc/4804000.ufshc/by-name/frp       0600   system     system
+/dev/block/platform/soc/1bf8000.pcie/by-name/frp        0600   system     system
+/dev/block/platform/soc/f44000.sdhci/by-name/frp        0600   system     system
 
 # This is temporary while using SD card for initial bring-up
 /dev/block/platform/soc/8804000.sdhci/by-name/frp       0600   system     system
+
+# Add device block for MISC
+/dev/block/platform/soc/7464900.sdhci/by-name/misc       0660   root     system
+/dev/block/platform/soc/624000.ufshc/by-name/misc        0660   root     system
+/dev/block/platform/soc/1da4000.ufshc/by-name/misc       0660   root     system
+/dev/block/platform/soc/c0c4000.sdhci/by-name/misc       0660   root     system
+/dev/block/platform/soc/1d84000.ufshc/by-name/misc       0660   root     system
+/dev/block/platform/soc/7c4000.sdhci/by-name/misc        0660   root     system
+/dev/block/platform/soc/4744000.sdhci/by-name/misc       0660   root     system
+/dev/block/platform/soc/4804000.ufshc/by-name/misc       0660   root     system
+
+# I2C
+/dev/i2c-*                0660   system     system
 
 # Kmsg device
 /dev/kmsg                                               0620   root       system
@@ -470,6 +493,12 @@ subsystem mem_buf_vm
 /sys/class/leds/blue     repeat       0640    system    system
 /sys/class/leds/blue     hw_pattern   0640    system    system
 
+#Haptics class devices
+/sys/class/qcom-haptics    visense_enabled     0400    system    system
+/sys/class/qcom-haptics    primitive_duration  0600    system    system
+/sys/class/qcom-haptics    v_gain_error        0640    system    audio
+/sys/class/qcom-haptics    i_gain_error        0640    system    audio
+
 # NPU device
 /dev/msm_npu             0644   system     system
 
@@ -478,8 +507,10 @@ subsystem mem_buf_vm
 /sys/class/dual_role_usb/*	power_role	0660	system	system
 /sys/class/dual_role_usb/*	mode		0660	system	system
 
-/sys/class/typec/port0      power_role  0660    system  system
-/sys/class/typec/port0      data_role   0660    system  system
+/sys/class/typec/port0		data_role	0660	system	usb
+/sys/class/typec/port0		power_role	0660	system	usb
+/sys/class/typec/port0		port_type	0660	system	usb
+/sys/class/typec/port0-partner	accessory_mode	0440	system	usb
 
 # USB Dynamic Disable
 /sys/bus/platform/devices/a600000.ssusb	dynamic_disable	0220	root	usb
@@ -494,9 +525,7 @@ subsystem mem_buf_vm
 /sys/bus/usb/devices/usb*   authorized                 0660  system  usb
 
 #USB mode setting
-/sys/bus/platform/devices/a400000.ssusb    mode        0660  system  usb
 /sys/bus/platform/devices/a600000.ssusb    mode        0660  system  usb
-/sys/bus/platform/devices/4e00000.ssusb    mode        0660  system  usb
 
 #Memory Offline
 /sys/devices/system/memory/memory* state    0660 system system
@@ -608,3 +637,9 @@ subsystem mem_buf_vm
 
 # Q2SPI UWB device
 /dev/q2spiuwb    0660    uwb    uwb
+
+# RemoteProc state
+/sys/class/remoteproc/remoteproc*   state    0660    root  system
+
+# IPA Events
+/dev/ipa_events         0660   radio      radio

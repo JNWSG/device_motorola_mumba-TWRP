@@ -1,42 +1,42 @@
 on property:twrp.variant.files_copied=1
     write /proc/sys/kernel/firmware_config/force_sysfs_fallback 1
-    write /dev/kmsg "[peridotwifi] starting cp-wifi-ko"
+    write /dev/kmsg "[mumbawifi] starting cp-wifi-ko"
     start cp-wifi-ko
 
 on property:twrp.cpko=true
-    write /dev/kmsg "[peridotwifi] kernel modules loaded"
+    write /dev/kmsg "[mumbawifi] kernel modules loaded"
 
 on property:some.start.property=true
     setprop qcomwlan.driver.load true
 
     start vendor.qrtr-ns
-    write /dev/kmsg "[peridotwifi] qrtr-ns started"
+    write /dev/kmsg "[mumbawifi] qrtr-ns started"
 
     start vendor.rmt_storage
-    write /dev/kmsg "[peridotwifi] rmt_storage started"
+    write /dev/kmsg "[mumbawifi] rmt_storage started"
 
     start vendor.pd_mapper
-    write /dev/kmsg "[peridotwifi] pd_mapper started"
+    write /dev/kmsg "[mumbawifi] pd_mapper started"
 
     start vendor.per_proxy
-    write /dev/kmsg "[peridotwifi] per_proxy started"
+    write /dev/kmsg "[mumbawifi] per_proxy started"
 
     start cnss-daemon
-    write /dev/kmsg "[peridotwifi] cnss-daemon started"
+    write /dev/kmsg "[mumbawifi] cnss-daemon started"
 
     start wificond
-    write /dev/kmsg "[peridotwifi] wificond started"
+    write /dev/kmsg "[mumbawifi] wificond started"
 
     start wifi_hal
-    write /dev/kmsg "[peridotwifi] wifi_hal started"
+    write /dev/kmsg "[mumbawifi] wifi_hal started"
 
 on early-boot
-    write /dev/kmsg "[peridotwifi] early boot config"
+    write /dev/kmsg "[mumbawifi] early boot config"
     write /sys/kernel/icnss/wlan_en_delay 1000
     write /sys/kernel/icnss/wpss_boot 1
 
 on boot
-    write /dev/kmsg "[peridotwifi] boot config"
+    write /dev/kmsg "[mumbawifi] boot config"
     write /sys/kernel/cnss/recovery 3
     chown radio wakelock /sys/power/wake_lock
     chown radio wakelock /sys/power/wake_unlock

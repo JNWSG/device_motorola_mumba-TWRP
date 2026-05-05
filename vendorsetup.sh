@@ -19,7 +19,7 @@
 #
 
 #set -o xtrace
-FDEVICE="peridot"
+FDEVICE="mumba"
 
 TW_get_target_device() {
 	export script_path="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"

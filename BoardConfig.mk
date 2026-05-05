@@ -39,15 +39,15 @@ ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 
 # Bootloader
-PRODUCT_PLATFORM := pineapple
-TARGET_BOOTLOADER_BOARD_NAME := peridot
+PRODUCT_PLATFORM := parrot
+TARGET_BOOTLOADER_BOARD_NAME := mumba
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 
 # Platform
-TARGET_BOARD_PLATFORM := pineapple
-TARGET_BOARD_PLATFORM_GPU := qcom-adreno735
-QCOM_BOARD_PLATFORMS += xiaomi_sm8635
+TARGET_BOARD_PLATFORM := parrot
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno710
+QCOM_BOARD_PLATFORMS += motorola_sm6435
 #BOARD_USES_QCOM_HARDWARE := true
 
 # Kernel
@@ -75,7 +75,6 @@ AB_OTA_PARTITIONS += \
     dtbo \
     vbmeta \
     vbmeta_system \
-    odm \
     product \
     system \
     system_ext \
@@ -87,13 +86,13 @@ AB_OTA_PARTITIONS += \
 BOARD_AVB_ENABLE := true
 
 # Partitions
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 104857600
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 134217728
 
 # Dynamic Partition
-BOARD_SUPER_PARTITION_SIZE := 9126805504
+BOARD_SUPER_PARTITION_SIZE := 8317304832
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200
-BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor vendor_dlkm odm
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 8313110528
+BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor vendor_dlkm
 
 BOARD_PARTITION_LIST := $(call to-upper, $(BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST))
 $(foreach p, $(BOARD_PARTITION_LIST), $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := erofs))
@@ -117,7 +116,7 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 TW_INCLUDE_LOGICAL := true
 
 # Crypto
-FIXED_DECRYPT := true
+FIXED_DECRYPT := false
 TW_INCLUDE_CRYPTO := $(FIXED_DECRYPT)
 TW_INCLUDE_CRYPTO_FBE := $(FIXED_DECRYPT)
 TW_INCLUDE_FBE_METADATA_DECRYPT := $(FIXED_DECRYPT)
@@ -175,9 +174,6 @@ TW_HAS_EDL_MODE := false
 TW_UNBIND_SDCARD_F2FS := 1
 TW_BACKUP_EXCLUSIONS := /data/fonts
 TW_LOAD_PREBUILT_MODULES_AT_FIRST := true
-TW_SUPPORT_INPUT_AIDL_HAPTICS := true
-TW_SUPPORT_INPUT_AIDL_HAPTICS_FQNAME := "IVibrator/vibratorfeature"
-TW_SUPPORT_INPUT_AIDL_HAPTICS_FIX_OFF := true
 
 # automatically wipe /metadata after data format
 TW_WIPE_METADATA_AFTER_DATAFORMAT := 1
@@ -203,18 +199,10 @@ FORCE_DATA_FORMAT_F2FS := 1
 #FORCE_CASEFOLDING := 1
 
 # Haptic
-FIXED_HAPTICS := true
-
-ifeq ($(FIXED_HAPTICS),true)
-   TW_SUPPORT_INPUT_AIDL_HAPTICS := true
-   TW_SUPPORT_INPUT_AIDL_HAPTICS_FQNAME := "IVibrator/vibratorfeature"
-   TW_SUPPORT_INPUT_AIDL_HAPTICS_FIX_OFF := true
-else
-   TW_NO_HAPTICS := true
-endif
+TW_NO_HAPTICS := true
 
 TW_USE_SERIALNO_PROPERTY_FOR_DEVICE_ID := true
-TW_LOAD_VENDOR_MODULES := "adsp_loader_dlkm.ko focaltech_3683g.ko focaltech_touch.ko goodix_core.ko goodix_ts.ko nxp-nci.ko qti_battery_charger.ko xiaomi_touch.ko"
+TW_LOAD_VENDOR_MODULES := "sx937x_sar.ko qti_battery_charger.ko gh_rm_drv.ko gh_irq_lend.ko gh_mem_notifier.ko gh_msgq.ko altmode-glink.ko fsa4480-i2c.ko msm_ext_display.ko panel_event_notifier.ko chipone_tddi_v3_mmi.ko hdcp_qseecom_dlkm.ko awinic_sar.ko ilitek_v4_mmi.ko msm_drm.ko qcom-scm.ko qcom_va_minidump.ko pinctrl-msm.ko spmi-pmic-arb.ko mem_buf_dev.ko qcom_iommu_util.ko msm_dma_iommu_mapping.ko ipanetm.ko rmnet_ctl.ko audio_pkt_dlkm.ko ipam.ko usb_f_gsi.ko icnss2.ko usb_f_qdss.ko qti_glink_charger.ko i2c-msm-geni.ko slim-qcom-ngd-ctrl.ko nxp-nci.ko snd-usb-audio-qmi.ko charger-ulog-glink.ko bm_adsp_ulog.ko ucsi_qti_glink.ko f_fs_ipc_log.ko dwc3-msm.ko mmi_charger.ko pmic-pon-log.ko sps_drv.ko glink_pkt.ko gsim.ko qsee_ipc_irq_bridge.ko qti_pmic_glink.ko mhi_dev_uci.ko msm_geni_serial.ko mhi_dev_dtr.ko smp2p.ko qti-ocp-notifier.ko bam_dma.ko msm_gpi.ko mhi.ko pci-msm-drv.ko qcom_glink_smem.ko qcom_glink.ko ufs-qcom.ko rpmh-regulator.ko sdhci-msm.ko msm_qmp.ko qrtr.ko qcom_rpmh.ko qcom_tsens.ko bcl_pmic5.ko qcom_aoss.ko qcom-ipcc.ko qcom-pdc.ko"
 TW_LOAD_VENDOR_MODULES_EXCLUDE_GKI := true
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/class/thermal/thermal_zone48/temp"
 TW_BATTERY_SYSFS_WAIT_SECONDS := 6

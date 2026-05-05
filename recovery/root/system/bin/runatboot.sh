@@ -1,84 +1,59 @@
 #!/system/bin/sh
 
-DEBUG=0
-[ "$DEBUG" = "1" ] && set -o xtrace;
+mount /vendor_dlkm
+mount /vendor
+modprobe -d /vendor_dlkm/lib/modules /vendor_dlkm/lib/modules/nova_0flash_mmi.ko
+modprobe -d /vendor_dlkm/lib/modules /vendor_dlkm/lib/modules/ili9882_mmi.ko
+sleep 1
+if [ $(cat /sys/class/touchscreen/primary/productinfo) == "NT36672C" ]
+then
+echo 1 > /sys/class/touchscreen/primary/forcereflash
+echo boe_chipone_firmware.bin > /sys/class/touchscreen/primary/doreflash
+echo "Reflashing firmware..."
+echo 0 > /sys/class/touchscreen/primary/forcereflash
+fi
 
-LOGMSG() {
-	echo "I:$@" >> /tmp/recovery.log
-}
+is_fastboot=$(getprop init.svc.fastbootd)
+if [ "$is_fastboot" != "running" ]; then
+        mount /vendor_dlkm
+        insmod /vendor_dlkm/lib/modules/leds_aw99703.ko
+        insmod /vendor_dlkm/lib/modules/leds-qpnp-flash-v2.ko
+        insmod /vendor_dlkm/lib/modules/ili9882_mmi.ko
+        insmod /vendor_dlkm/lib/modules/msm_drm.ko
+        insmod /vendor_dlkm/lib/modules/mmi_annotate.ko
+        insmod /vendor_dlkm/lib/modules/mmi_info.ko
+        insmod /vendor_dlkm/lib/modules/mmi_relay.ko
+        insmod /vendor_dlkm/lib/modules/mmi_charger.ko
+        insmod /vendor_dlkm/lib/modules/mmi_sys_temp.ko
+        insmod /vendor_dlkm/lib/modules/moto_f_mass_storage.ko
+        insmod /vendor_dlkm/lib/modules/sensors_class.ko
+        insmod /vendor_dlkm/lib/modules/touchscreen_mmi.ko
+        insmod /vendor_dlkm/lib/modules/stmicro_mmi.ko
+        insmod /vendor_dlkm/lib/modules/goodix_brl_mmi.ko
+        insmod /vendor_dlkm/lib/modules/sx937x_sar.ko
+        insmod /vendor_dlkm/lib/modules/bm_adsp_ulog.ko
+        insmod /vendor_dlkm/lib/modules/qti_glink_charger.ko
+        insmod /vendor_dlkm/lib/modules/qpnp_adaptive_charge.ko
+        insmod /vendor_dlkm/lib/modules/q6_pdr_dlkm.ko
+        insmod /vendor_dlkm/lib/modules/q6_notifier_dlkm.ko
+        insmod /vendor_dlkm/lib/modules/snd_event_dlkm.ko
+        insmod /vendor_dlkm/lib/modules/gpr_dlkm.ko
+        insmod /vendor_dlkm/lib/modules/spf_core_dlkm.ko
+        insmod /vendor_dlkm/lib/modules/adsp_loader_dlkm.ko
+fi
 
-quit() {
-	LOGMSG "$@ is loaded";
-}
+mkdir /firmware
+SLOT=$(getprop ro.boot.slot_suffix)
+mount /dev/block/bootdevice/by-name/modem$SLOT /firmware -O ro
+echo "1" > /proc/sys/kernel/firmware_config/force_sysfs_fallback
+echo "1" > /sys/kernel/boot_adsp/boot
 
-load_drivers() {
-	local path1=/lib/modules;
-	local path2=/vendor/lib/modules/1.1;
-	local modules="adsp_loader_dlkm focaltech_3683g focaltech_touch goodix_core goodix_ts gpr_dlkm \
-		panel_event_notifier pdr_interface pmic_glink q6_notifier_dlkm q6_pdr_dlkm \
-		qcom_glink qcom_glink_smem qcom_pil_info qcom_q6v5 qcom_q6v5_pas qcom_ramdump qcom_smd qcom_sysmon \
-		qmi_helpers qti_battery_charger rproc_qcom_common snd_event_dlkm spf_core_dlkm xiaomi_touch"
+sleep 5
 
-	# loop through the modules
-	for i in $modules; do
-		# check whether the module is already loaded
-		if lsmod | grep "^$i"; then
-			quit "$i"
-			continue
-		fi
+# Mount
+mount -o rw /system_root
+mount -o rw /system_ext
+mount -o rw /product
+mount -o rw /vendor
 
-		# try to load the module from path1
-		if [ -f "$path1/$i.ko" ]; then
-			insmod "$path1/$i.ko"
-		fi
-
-		if lsmod | grep "^$i"; then
-			quit "$i"
-			continue
-		fi
-
-		# try to load the module from path2
-		if [ -f "$path2/$i.ko" ]; then
-			insmod "$path2/$i.ko"
-		fi
-
-		if lsmod | grep "^$i"; then
-			quit "$i"
-			continue
-		fi
-
-		# module failed to load from all paths
-		LOGMSG "$i failed to load"
-	done
-}
-
-reset_touch() {
-	LOGMSG "Resetting touchscreen post screen blank..."
-	echo 1 > /sys/devices/platform/goodix_ts.0/irq_info
-	echo 1 > /sys/devices/platform/goodix_ts.0/reset
-}
-
-purge_logs() {
-	LOGMSG "Purging recovery-generated logs older than 14 days..."
-
-	FOX_LOG_DIR="/persist/Fox/logs"
-
-	if [ -d "$FOX_LOG_DIR" ]; then
-		find "$FOX_LOG_DIR" -maxdepth 1 -type f -mtime +14 -print -delete
-	else
-		LOGMSG "$FOX_LOG_DIR not present"
-	fi
-}
-
-SCRIPT_NAME="$(basename "$0")"
-
-LOGMSG "---$SCRIPT_NAME start---"
-
-load_drivers
-
-reset_touch
-
-purge_logs
-
-LOGMSG "---$SCRIPT_NAME end---"
 exit 0
