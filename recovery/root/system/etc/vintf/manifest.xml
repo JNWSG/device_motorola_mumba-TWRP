@@ -1,83 +1,62 @@
 <!--
     Input:
-        system/libhidl/vintfdata/manifest.xml
-        device/xiaomi/missi/framework_manifest.xml
+        device/qcom/parrot66/manifest_parrot.xml
+        device/moto/mumba/manifest_mumba.xml
 -->
-<manifest version="4.0" type="framework">
-    <hal format="hidl" max-level="6">
-        <name>android.frameworks.displayservice</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::IDisplayService/default</fqname>
-    </hal>
-    <hal format="hidl" max-level="5">
-        <name>android.frameworks.schedulerservice</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::ISchedulingPolicyService/default</fqname>
+<manifest version="8.0" type="device" target-level="202404">
+    <hal format="aidl">
+        <name>android.hardware.drm</name>
+        <fqname>IDrmFactory/wfdhdcp</fqname>
     </hal>
     <hal format="aidl">
-        <name>android.frameworks.sensorservice</name>
-        <fqname>ISensorManager/default</fqname>
+        <name>android.hardware.gatekeeper</name>
+        <fqname>IGatekeeper/default</fqname>
     </hal>
-    <hal format="hidl">
-        <name>android.frameworks.sensorservice</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::ISensorManager/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>android.hidl.manager</name>
-        <transport>hwbinder</transport>
-        <version>1.2</version>
-        <interface>
-            <name>IServiceManager</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@1.2::IServiceManager/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>android.hidl.memory</name>
-        <transport arch="32+64">passthrough</transport>
-        <fqname>@1.0::IMapper/ashmem</fqname>
-    </hal>
-    <hal format="hidl" max-level="7">
-        <name>android.system.net.netd</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.1::INetd/default</fqname>
-    </hal>
-    <hal format="hidl" max-level="7">
-        <name>android.system.wifi.keystore</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::IKeystore/default</fqname>
-    </hal>
-    <hal format="native">
-        <name>netutils-wrapper</name>
-        <version>1.0</version>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.qccsyshal</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.2::IQccsyshal/qccsyshal</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.radio.atcmdfwd</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::IAtCmdFwd/AtCmdFwdService</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.systemhelper</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::ISystemEvent/default</fqname>
-        <fqname>@1.0::ISystemResource/default</fqname>
+    <!-- KeyMint AIDL - required for FBE/metadata decryption in recovery -->
+    <hal format="aidl">
+        <name>android.hardware.security.keymint</name>
+        <version>1</version>
+        <fqname>IKeyMintDevice/default</fqname>
     </hal>
     <hal format="aidl">
-        <name>android.hardware.boot</name>
-        <fqname>IBootControl/default</fqname>
+        <name>android.hardware.security.sharedsecret</name>
+        <version>1</version>
+        <fqname>ISharedSecret/default</fqname>
     </hal>
-    <system-sdk>
-        <version>29</version>
-        <version>30</version>
-        <version>31</version>
-        <version>32</version>
-        <version>33</version>
-        <version>34</version>
-    </system-sdk>
+    <hal format="aidl">
+        <name>android.hardware.security.secureclock</name>
+        <version>1</version>
+        <fqname>ISecureClock/default</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.nfc</name>
+        <fqname>INfc/default</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.secure_element</name>
+        <fqname>ISecureElement/eSE1</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>motorola.hardware.power</name>
+        <version>2</version>
+        <fqname>IMdpfExt/default</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>vendor.nxp.nxpnfc_aidl</name>
+        <fqname>INxpNfc/default</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>vendor.qti.hardware.wifidisplaysession_aidl</name>
+        <fqname>IWifiDisplaySession/default</fqname>
+        <fqname>IWifiDisplaySessionAudioTrack/default</fqname>
+        <fqname>IWifiDisplaySessionImageTrack/default</fqname>
+        <fqname>IWifiDisplaySessionVideoTrack/default</fqname>
+    </hal>
+    <hal format="hidl" override="true">
+        <name>vendor.qti.memory.pasrmanager</name>
+        <transport>hwbinder</transport>
+    </hal>
+    <sepolicy>
+        <version>202404</version>
+    </sepolicy>
 </manifest>
