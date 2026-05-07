@@ -21,6 +21,8 @@
 #set -o xtrace
 FDEVICE="mumba"
 
+git clone https://github.com/LineageOS/android_hardware_qcom_bootctrl.git -b lineage-23.2-caf hardware/qcom-caf/bootctrl
+
 TW_get_target_device() {
 	export script_path="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 	if echo "$script_path" | grep -q "$FDEVICE"; then
