@@ -123,6 +123,16 @@ TW_INCLUDE_FBE_METADATA_DECRYPT := $(FIXED_DECRYPT)
 BOARD_USES_QCOM_FBE_DECRYPTION := $(FIXED_DECRYPT)
 TW_USE_FSCRYPT_POLICY := 2
 
+# FIX: Explicitly declare userdata filesystem type for crypto layer
+TW_CRYPTO_FS_TYPE := f2fs
+
+# FIX: Pull librecovery_updater.so into system/lib64 in the recovery ramdisk.
+# Without this, android.hardware.boot-service.qti.recovery crashes on start
+# because libboot_control_qti.so can't find it, breaking A/B slot control.
+RECOVERY_LIBRARY_SOURCE_FILES += \
+    $(TARGET_OUT_VENDOR)/lib64/librecovery_updater.so \
+    $(TARGET_OUT_VENDOR)/lib64/librecovery_updater_msm.so
+
 BOARD_USES_METADATA_PARTITION := true
 PLATFORM_VERSION := 99.87.36
 PLATFORM_SECURITY_PATCH := 2127-12-31
@@ -181,7 +191,7 @@ TW_WIPE_METADATA_AFTER_DATAFORMAT := 1
 TW_BIND_MOUNT_SDCARD_ON_FORMAT := 1
 
 ifeq ($(FIXED_DECRYPT),false)
-	# Set to 1 to skip the FBE decryption routines (prevents hanging at the Fox logo or Redmi/Mi logo)
+	# Set to 1 to skip the FBE decryption routines (prevents hanging at the splash logo or oem logo)
 	TW_SKIP_FBE_DECRYPTION := 1
 endif
 
@@ -201,6 +211,6 @@ FORCE_DATA_FORMAT_F2FS := 1
 TW_NO_HAPTICS := true
 
 TW_USE_SERIALNO_PROPERTY_FOR_DEVICE_ID := true
-TW_LOAD_VENDOR_MODULES := "sx937x_sar.ko qti_battery_charger.ko gh_rm_drv.ko gh_irq_lend.ko gh_mem_notifier.ko gh_msgq.ko altmode-glink.ko fsa4480-i2c.ko msm_ext_display.ko panel_event_notifier.ko chipone_tddi_v3_mmi.ko hdcp_qseecom_dlkm.ko awinic_sar.ko ilitek_v4_mmi.ko msm_drm.ko qcom-scm.ko qcom_va_minidump.ko pinctrl-msm.ko spmi-pmic-arb.ko mem_buf_dev.ko qcom_iommu_util.ko msm_dma_iommu_mapping.ko ipanetm.ko rmnet_ctl.ko audio_pkt_dlkm.ko ipam.ko usb_f_gsi.ko icnss2.ko usb_f_qdss.ko qti_glink_charger.ko i2c-msm-geni.ko slim-qcom-ngd-ctrl.ko nxp-nci.ko snd-usb-audio-qmi.ko charger-ulog-glink.ko bm_adsp_ulog.ko ucsi_qti_glink.ko f_fs_ipc_log.ko dwc3-msm.ko mmi_charger.ko pmic-pon-log.ko sps_drv.ko glink_pkt.ko gsim.ko qsee_ipc_irq_bridge.ko qti_pmic_glink.ko mhi_dev_uci.ko msm_geni_serial.ko mhi_dev_dtr.ko smp2p.ko qti-ocp-notifier.ko bam_dma.ko msm_gpi.ko mhi.ko pci-msm-drv.ko qcom_glink_smem.ko qcom_glink.ko ufs-qcom.ko rpmh-regulator.ko sdhci-msm.ko msm_qmp.ko qrtr.ko qcom_rpmh.ko qcom_tsens.ko bcl_pmic5.ko qcom_aoss.ko qcom-ipcc.ko qcom-pdc.ko"
+TW_LOAD_VENDOR_MODULES := "sx937x_sar.ko qti_battery_charger.ko gh_rm_drv.ko gh_irq_lend.ko gh_mem_notifier.ko gh_msgq.ko altmode-glink.ko fsa4480-i2c.ko msm_ext_display.ko panel_event_notifier.ko chipone_tddi_v3_mmi.ko hdcp_qseecom_dlkm.ko awinic_sar.ko ilitek_v4_mmi.ko msm_drm.ko qcom-scm.ko qcom_va_minidump.ko pinctrl-msm.ko spmi-pmic-arb.ko mem_buf_dev.ko qcom_iommu_util.ko msm_dma_iommu_mapping.ko ipanetm.ko rmnet_ctl.ko audio_pkt_dlkm.ko ipam.ko usb_f_gsi.ko icnss2.ko usb_f_qdss.ko qti_glink_charger.ko i2c-msm-geni.ko slim-qcom-ngd-ctrl.ko nxp-nci.ko snd-usb-audio-qmi.ko charger-ulog-glink.ko bm_adsp_ulog.ko ucsi_qti_glink.ko f_fs_ipc_log.ko dwc3-msm.ko mmi_charger.ko pmic-pon-log.ko sps_drv.ko glink_pkt.ko gsim.ko qsee_ipc_irq_bridge.ko qti_pmic_glink.ko mhi_dev_uci.ko msm_geni_serial.ko mhi_dev_dtr.ko smp2p.ko qti-ocp-notifier.ko bam_dma.ko msm_gpi.ko mhi.ko pci-msm-drv.ko qcom_glink_smem.ko qcom_glink.ko ufs-qcom.ko rpmh-regulator.ko sdhci-msm.ko msm_qmp.ko qrtr.ko qcom_rpmh.ko qcom_tsens.ko bcl_pmic5.ko qcom_aoss.ko qcom-ipcc.ko qcom-pdc.ko qseecom_dlkm.ko qseecom_proxy.ko smcinvoke_dlkm.ko ufshcd-crypto-qti.ko qcom_ice.ko qcom-scm.ko"
 TW_CUSTOM_CPU_TEMP_PATH := "/sys/class/thermal/thermal_zone48/temp"
 TW_BATTERY_SYSFS_WAIT_SECONDS := 6
