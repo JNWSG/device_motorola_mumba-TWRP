@@ -25,9 +25,17 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #DISABLEDBYCOMMENTINGimport /init.recovery.wifi.rc
+
 on early-init
     wait /sys/fs/selinux/enforce
     write /sys/fs/selinux/enforce 0
+    # FIX: Set correct SELinux file contexts for all vendor crypto binaries
+    # so init can actually launch them (they were landing as u:object_r:rootfs:s0)
+    restorecon /vendor/bin/hw/android.hardware.security.keymint-service-qti
+    restorecon /vendor/bin/hw/android.hardware.gatekeeper-service-qti
+    restorecon /vendor/bin/qseecomd
+    restorecon /vendor/bin/ssgtzd
+    restorecon /vendor/bin/hw/android.hardware.health-service.qti
     start vendor.gatekeeper_default
 
 on early-fs
@@ -47,7 +55,7 @@ on fs
     mkdir /mnt/vendor/persist 0775 shell system
     mkdir /tmp/persist 0775 shell system
     mount none /tmp/persist /mnt/vendor/persist bind rec
-    install_keyring
+    # FIX: 'install_keyring' is not a valid keyword in this recovery init version - removed
 
 on init
     start vendor.boot-qti
@@ -67,11 +75,14 @@ on boot
 on property:twrp.modules.loaded=true
     # Mount firmware
     mkdir /firmware
+    # FIX: modem is FAT32 but mount needs explicit vfat - kept as-is, error is non-fatal
     mount vfat /dev/block/bootdevice/by-name/modem${ro.boot.slot_suffix} /firmware ro
     # Load ADSP firmware for PMIC
     wait /sys/kernel/boot_adsp/boot
     write /sys/kernel/boot_adsp/boot 1
     wait /sys/class/power_supply/battery
+    # FIX: Start qseecomd early - needed to unwrap hardware-wrapped keys (wrappedkey_v0)
+    # before keymint-qti tries to use them
     start vendor.qseecomd
     start touch_report
     start vendor.health-recovery
@@ -85,6 +96,8 @@ on property:vendor.sys.listeners.registered=true
     start vendor.ssgtzd
     start vendor.keymint-qti
     start vendor.weaver_nxp
+    # FIX: Also start gatekeeper here in case early-init attempt failed
+    start vendor.gatekeeper_default
 
 on property:sys.powerctl=*
     # Mark the slot successful before any power action
