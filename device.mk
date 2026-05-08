@@ -46,6 +46,10 @@ TWRP_REQUIRED_MODULES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/librecovery_updater.so:recovery/root/system/lib64/librecovery_updater.so \
     $(DEVICE_PATH)/recovery/root/vendor/lib64/librecovery_updater_msm.so:recovery/root/system/lib64/librecovery_updater_msm.so
-    
+
+# FIX: Place corrected manifest at vendor vintf path used by TWRP keymaster lookup
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/system/etc/vintf/manifest.xml:recovery/root/vendor/etc/vintf/manifest.xml
+       
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
