@@ -102,3 +102,10 @@ on property:vendor.sys.listeners.registered=true
 on property:sys.powerctl=*
     # Mark the slot successful before any power action
     exec u:r:recovery:s0 -- /system/bin/bootctl mark-boot-succssgtzd
+
+on property:vendor.sys.listeners.registered=true
+    start vendor.ssgtzd
+    # FIX: Start keymint-qti directly via exec under recovery domain
+    # since restorecon relabelto is denied in this recovery selinux context
+    exec u:r:recovery:s0 root root -- /vendor/bin/hw/android.hardware.security.keymint-service-qti
+    start vendor.weaver_nxp   
