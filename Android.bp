@@ -7,3 +7,49 @@
 soong_namespace {
     imports: ["hardware/qcom-caf/bootctrl"],
 }
+
+// Prebuilt shared libraries needed by android.hardware.boot-service.qti.recovery
+// via libboot_control_qti.so → librecovery_updater.so
+// Cannot use PRODUCT_COPY_FILES for ELF files; use cc_prebuilt_library_shared instead.
+
+cc_prebuilt_library_shared {
+    name: "librecovery_updater",
+    srcs: ["recovery/root/vendor/lib64/librecovery_updater.so"],
+    arch: {
+        arm64: {
+            srcs: ["recovery/root/vendor/lib64/librecovery_updater.so"],
+        },
+    },
+    shared_libs: [],
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    prefer: true,
+    recovery: true,
+    recovery_available: true,
+    relative_install_path: "",
+    // Install into system/lib64 of the recovery ramdisk
+    // (where libboot_control_qti.so looks for it)
+    system_ext_specific: false,
+    vendor: false,
+    enabled: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "librecovery_updater_msm",
+    srcs: ["recovery/root/vendor/lib64/librecovery_updater_msm.so"],
+    arch: {
+        arm64: {
+            srcs: ["recovery/root/vendor/lib64/librecovery_updater_msm.so"],
+        },
+    },
+    strip: {
+        none: true,
+    },
+    check_elf_files: false,
+    prefer: true,
+    recovery: true,
+    recovery_available: true,
+    enabled: true,
+}

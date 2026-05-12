@@ -41,11 +41,11 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 TWRP_REQUIRED_MODULES += \
     moto_prebuilt
 
-# FIX: Copy librecovery_updater directly into recovery system/lib64
-# boot-service.qti.recovery needs it via libboot_control_qti.so
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/vendor/lib64/librecovery_updater.so:recovery/root/system/lib64/librecovery_updater.so \
-    $(DEVICE_PATH)/recovery/root/vendor/lib64/librecovery_updater_msm.so:recovery/root/system/lib64/librecovery_updater_msm.so
+# FIX: Pull librecovery_updater into recovery ramdisk system/lib64
+# Must use PRODUCT_PACKAGES for ELF shared libs
+PRODUCT_PACKAGES += \
+    librecovery_updater \
+    librecovery_updater_msm
 
 # FIX: Place corrected manifest at vendor vintf path used by TWRP keymaster lookup
 PRODUCT_COPY_FILES += \
