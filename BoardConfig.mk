@@ -126,13 +126,6 @@ TW_USE_FSCRYPT_POLICY := 2
 # FIX: Explicitly declare userdata filesystem type for crypto layer
 TW_CRYPTO_FS_TYPE := f2fs
 
-# FIX: Pull librecovery_updater.so into system/lib64 in the recovery ramdisk.
-# Without this, android.hardware.boot-service.qti.recovery crashes on start
-# because libboot_control_qti.so can't find it, breaking A/B slot control.
-RECOVERY_LIBRARY_SOURCE_FILES += \
-    $(TARGET_OUT_VENDOR)/lib64/librecovery_updater.so \
-    $(TARGET_OUT_VENDOR)/lib64/librecovery_updater_msm.so
-
 BOARD_USES_METADATA_PARTITION := true
 PLATFORM_VERSION := 99.87.36
 PLATFORM_SECURITY_PATCH := 2127-12-31
